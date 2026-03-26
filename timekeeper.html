@@ -36,7 +36,7 @@ html, body {
 
 /* 중앙 시간 */
 #time {
-  font-size: 25vw; /* 화면 좌우 거의 꽉차도록 */
+  font-size: 25vw;
   font-weight: 700;
   text-align: center;
   margin-bottom: 5vh;
@@ -60,17 +60,18 @@ html, body {
   color: white;
 }
 .preset button.active {
-  background: white;
+  background: rgba(255,255,255,0.5);
   color: black;
 }
 
 /* START/STOP/RESET 버튼 */
 #startStopBtn {
   font-size: 6vw;
-  width: 100%;  /* 화면 좌우 끝까지 */
-  padding: 2.5vh 0;
-  border-radius: 0; /* 모서리 직사각형으로 */
-  background: #444; /* 톤 다운된 단색 */
+  width: 90%; /* 시간과 좌우 통일 */
+  max-width: 600px;
+  padding: 2vh 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.2); /* 프리셋과 같은 톤, 살짝 불투명 */
   color: white;
   border: none;
   transition: transform 0.1s;
@@ -105,7 +106,7 @@ html, body {
 </div>
 
 <script>
-let total = 60; // 초기 1분
+let total = 60;
 let initial = 60;
 let interval = null;
 let running = false;
@@ -143,26 +144,22 @@ function updateDisplay(){
   }
 }
 
-// START/STOP/RESET 버튼
 function toggleStartStop(){
   const btn = document.getElementById("startStopBtn");
 
   if(running){
-    // STOP
     clearInterval(interval);
     running=false;
     stopState = true;
     btn.innerText="RESET";
     if(wakeLock){ wakeLock.release(); wakeLock=null; }
   } else if(stopState){
-    // RESET
     total = lastPreset;
     initial = lastPreset;
     stopState = false;
     btn.innerText="START";
     updateDisplay();
   } else {
-    // START
     running=true;
     beepPlayed=false;
     btn.innerText="STOP";
@@ -176,7 +173,6 @@ function toggleStartStop(){
   }
 }
 
-// 비프음
 function playBeep(){
   const ctx=new (window.AudioContext||window.webkitAudioContext)();
   const o=ctx.createOscillator();
@@ -186,7 +182,6 @@ function playBeep(){
   o.start(); o.stop(ctx.currentTime+0.3);
 }
 
-// 프리셋 선택
 function quickStart(sec, el){
   clearInterval(interval);
   total=sec; initial=sec; running=false; beepPlayed=false;
@@ -202,12 +197,11 @@ function quickStart(sec, el){
   updateDisplay();
 }
 
-// 화면 회전 대응
 window.addEventListener('resize', () => {
   const h = window.innerHeight;
   const w = window.innerWidth;
   const timeEl = document.getElementById("time");
-  timeEl.style.fontSize = Math.min(w,h)*0.25 + "px"; // 시간 크게
+  timeEl.style.fontSize = Math.min(w,h)*0.25 + "px";
 });
 
 updateDisplay();
