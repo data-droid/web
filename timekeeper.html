@@ -12,11 +12,11 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     font-family: -apple-system, BlinkMacSystemFont;
-    color: white;
     background: green;
-    transition: background 0.3s;
+    color: white;
     overflow: hidden;
   }
 
@@ -34,36 +34,26 @@
     transition: width 1s linear;
   }
 
-  #time { 
-    font-size: 18vw; 
-    font-weight: 700; 
-    text-align: center; 
-    margin-top: 15vh;
+  #time {
+    font-size: 18vw;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 5vh;
   }
 
-  #over { 
-    font-size: 5vw; 
-    margin-top: 1vh; 
-    opacity: 0.8; 
+  #over {
+    font-size: 5vw;
+    margin-top: 1vh;
+    opacity: 0.8;
   }
 
-  .controls { 
-    display: flex; 
-    gap: 10px; 
-    flex-wrap: wrap; 
-    justify-content: center; 
-    margin-top: 3vh; 
+  /* 프리셋 버튼 */
+  .preset {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 5vh;
   }
-
-  #startStopBtn {
-    font-size: 7vw;
-    width: 90%;
-    padding: 3vh 0;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.3);
-    color: white;
-  }
-
   .preset button {
     font-size: 4vw;
     padding: 2vh 3vw;
@@ -77,10 +67,22 @@
     color: black;
   }
 
-  .preset {
-    margin-top: auto;
-    margin-bottom: 5vh;
+  /* START/STOP/RESET 버튼 */
+  #startStopBtn {
+    font-size: 6vw;
+    width: 80%;
+    padding: 3vh 0;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #ff6a00, #ee0979);
+    color: white;
+    border: none;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    transition: transform 0.1s;
   }
+  #startStopBtn:active {
+    transform: scale(0.97);
+  }
+
 </style>
 </head>
 <body>
@@ -89,22 +91,20 @@
   <div class="progress-bar" id="progress"></div>
 </div>
 
-<!-- 시간 맨 위 -->
+<!-- 중앙 배치 -->
 <div id="time">01:00</div>
 <div id="over"></div>
 
-<!-- START/STOP/RESET 버튼 -->
-<div class="controls">
-  <button id="startStopBtn" onclick="toggleStartStop()">START</button>
-</div>
-
-<!-- 프리셋 버튼 맨 아래 -->
-<div class="controls preset">
+<div class="preset">
   <button onclick="quickStart(60,this)" class="active">1m</button>
   <button onclick="quickStart(120,this)">2m</button>
   <button onclick="quickStart(180,this)">3m</button>
   <button onclick="quickStart(240,this)">4m</button>
   <button onclick="quickStart(300,this)">5m</button>
+</div>
+
+<div>
+  <button id="startStopBtn" onclick="toggleStartStop()">START</button>
 </div>
 
 <script>
@@ -115,8 +115,8 @@ let interval = null;
 let running = false;
 let beepPlayed = false;
 let wakeLock = null;
-let lastPreset = 60; // 이전 프리셋 기억
-let stopState = false; // STOP 상태인지
+let lastPreset = 60;
+let stopState = false;
 
 async function requestWakeLock() {
   try {
@@ -147,7 +147,7 @@ function updateDisplay(){
   document.getElementById("over").innerText = overtime>0 ? "OVER "+format(overtime) : "";
 }
 
-// START / STOP / RESET 로직
+// START/STOP/RESET 버튼
 function toggleStartStop(){
   const btn = document.getElementById("startStopBtn");
 
@@ -186,7 +186,7 @@ function toggleStartStop(){
   }
 }
 
-// 비프음 1회
+// 비프음
 function playBeep(){
   const ctx=new (window.AudioContext||window.webkitAudioContext)();
   const o=ctx.createOscillator();
@@ -212,9 +212,7 @@ function quickStart(sec, el){
   updateDisplay();
 }
 
-// 회전 시 폰트 재계산
 window.addEventListener('resize', updateDisplay);
-
 updateDisplay();
 </script>
 
