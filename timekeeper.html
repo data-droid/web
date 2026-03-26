@@ -36,7 +36,7 @@ html, body {
 
 /* 중앙 시간 */
 #time {
-  font-size: 25vw; /* 화면 가로 거의 꽉차도록 */
+  font-size: 25vw; /* 화면 좌우 거의 꽉차도록 */
   font-weight: 700;
   text-align: center;
   margin-bottom: 5vh;
@@ -67,11 +67,10 @@ html, body {
 /* START/STOP/RESET 버튼 */
 #startStopBtn {
   font-size: 6vw;
-  width: 90%;  /* 좌우 거의 꽉찬 고정폭 */
-  max-width: 600px; /* 큰 화면에서 제한 */
-  padding: 2vh 0;
-  border-radius: 30px;
-  background: #ff5722;
+  width: 100%;  /* 화면 좌우 끝까지 */
+  padding: 2.5vh 0;
+  border-radius: 0; /* 모서리 직사각형으로 */
+  background: #444; /* 톤 다운된 단색 */
   color: white;
   border: none;
   transition: transform 0.1s;
