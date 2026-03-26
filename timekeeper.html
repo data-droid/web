@@ -34,25 +34,31 @@ html, body {
   transition: width 1s linear;
 }
 
-/* 시간 중앙 */
+/* 중앙 시간 */
 #time {
   font-size: 25vw;
   font-weight: 700;
   text-align: center;
   margin-bottom: 5vh;
-  width: 100%; /* 버튼과 동일하게 폭 통일 */
+  width: 100%;
   word-break: break-all;
 }
 
-/* 프리셋 버튼 */
+/* 프리셋 스크롤 */
+.preset-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 5vh;
+}
 .preset {
   display: flex;
   gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 5vh;
+  flex-wrap: nowrap;
+  padding: 0 10px;
 }
 .preset button {
+  flex: 0 0 auto;
   font-size: 4vw;
   padding: 2vh 3vw;
   border: none;
@@ -68,10 +74,10 @@ html, body {
 /* START/STOP/RESET 버튼 */
 #startStopBtn {
   font-size: 6vw;
-  width: 100%; /* 화면 좌우 끝까지 */
+  width: 100%;
   padding: 2vh 0;
   border-radius: 12px;
-  background: rgba(255,255,255,0.2); /* 프리셋과 동일 톤 */
+  background: rgba(255,255,255,0.2);
   color: white;
   border: none;
   transition: transform 0.1s;
@@ -79,7 +85,6 @@ html, body {
 #startStopBtn:active {
   transform: scale(0.97);
 }
-
 </style>
 </head>
 <body>
@@ -88,19 +93,24 @@ html, body {
   <div class="progress-bar" id="progress"></div>
 </div>
 
-<!-- 시간 중앙 -->
 <div id="time">01:00</div>
 
-<!-- 프리셋 -->
-<div class="preset">
-  <button onclick="quickStart(60,this)" class="active">1m</button>
-  <button onclick="quickStart(120,this)">2m</button>
-  <button onclick="quickStart(180,this)">3m</button>
-  <button onclick="quickStart(240,this)">4m</button>
-  <button onclick="quickStart(300,this)">5m</button>
+<!-- 프리셋 스크롤 -->
+<div class="preset-container">
+  <div class="preset">
+    <button onclick="quickStart(60,this)" class="active">1m</button>
+    <button onclick="quickStart(120,this)">2m</button>
+    <button onclick="quickStart(180,this)">3m</button>
+    <button onclick="quickStart(240,this)">4m</button>
+    <button onclick="quickStart(300,this)">5m</button>
+    <button onclick="quickStart(360,this)">6m</button>
+    <button onclick="quickStart(420,this)">7m</button>
+    <button onclick="quickStart(480,this)">8m</button>
+    <button onclick="quickStart(540,this)">9m</button>
+    <button onclick="quickStart(600,this)">10m</button>
+  </div>
 </div>
 
-<!-- START/STOP/RESET 버튼 -->
 <div>
   <button id="startStopBtn" onclick="toggleStartStop()">START</button>
 </div>
