@@ -34,9 +34,9 @@ html, body {
   transition: width 1s linear;
 }
 
-/* 시간 중앙 */
+/* 중앙 시간 */
 #time {
-  font-size: 15vw;
+  font-size: 25vw; /* 화면 가로 거의 꽉차도록 */
   font-weight: 700;
   text-align: center;
   margin-bottom: 5vh;
@@ -67,9 +67,10 @@ html, body {
 /* START/STOP/RESET 버튼 */
 #startStopBtn {
   font-size: 6vw;
-  width: 90%;
-  padding: 2.5vh 0;
-  border-radius: 30px; /* 좌우 긴 둥근 직사각형 */
+  width: 90%;  /* 좌우 거의 꽉찬 고정폭 */
+  max-width: 600px; /* 큰 화면에서 제한 */
+  padding: 2vh 0;
+  border-radius: 30px;
   background: #ff5722;
   color: white;
   border: none;
@@ -134,7 +135,7 @@ function updateDisplay(){
   let percent = total > 0 ? (total/initial)*100 : 0;
   document.getElementById("progress").style.width = percent + "%";
 
-  if(total<=0 && total > -9999){ // 0 이하
+  if(total<=0 && total > -9999){ 
     document.body.style.background = "red";
   } else if(total>0 && total<=30){
     document.body.style.background = "orange";
@@ -207,7 +208,7 @@ window.addEventListener('resize', () => {
   const h = window.innerHeight;
   const w = window.innerWidth;
   const timeEl = document.getElementById("time");
-  timeEl.style.fontSize = Math.min(w,h)*0.15 + "px";
+  timeEl.style.fontSize = Math.min(w,h)*0.25 + "px"; // 시간 크게
 });
 
 updateDisplay();
