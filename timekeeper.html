@@ -34,12 +34,13 @@ html, body {
   transition: width 1s linear;
 }
 
-/* 중앙 시간 */
+/* 시간 중앙 */
 #time {
   font-size: 25vw;
   font-weight: 700;
   text-align: center;
   margin-bottom: 5vh;
+  width: 100%; /* 버튼과 동일하게 폭 통일 */
   word-break: break-all;
 }
 
@@ -67,11 +68,10 @@ html, body {
 /* START/STOP/RESET 버튼 */
 #startStopBtn {
   font-size: 6vw;
-  width: 90%; /* 시간과 좌우 통일 */
-  max-width: 600px;
+  width: 100%; /* 화면 좌우 끝까지 */
   padding: 2vh 0;
   border-radius: 12px;
-  background: rgba(255,255,255,0.2); /* 프리셋과 같은 톤, 살짝 불투명 */
+  background: rgba(255,255,255,0.2); /* 프리셋과 동일 톤 */
   color: white;
   border: none;
   transition: transform 0.1s;
