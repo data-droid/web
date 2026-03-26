@@ -37,7 +37,7 @@
     margin-top: 100px;
   }
 
-  #over, #totalOver {
+  #over {
     font-size: 28px;
     margin-top: 10px;
     opacity: 0.8;
@@ -80,7 +80,6 @@
 
 <div id="time">00:00</div>
 <div id="over"></div>
-<div id="totalOver"></div>
 
 <div class="controls">
   <button onclick="start()">▶️ Start</button>
@@ -103,9 +102,22 @@
 let total = 0;
 let initial = 0;
 let overtime = 0;
-let totalOvertime = 0;
 let interval = null;
 let running = false;
+let wakeLock = null;
+
+// Wake Lock 시도
+async function requestWakeLock() {
+  try {
+    wakeLock = await navigator.wakeLock?.request('screen');
+    if(wakeLock) {
+      wakeLock.addEventListener('release', () => console.log('Wake Lock released'));
+      console.log('Wake Lock active');
+    }
+  } catch (err) {
+    console.log('Wake Lock failed:', err);
+  }
+}
 
 function format(sec){
   let m = Math.floor(sec / 60);
@@ -115,7 +127,6 @@ function format(sec){
 
 function updateDisplay(){
   document.getElementById("time").innerText = format(Math.max(0, total));
-
   let percent = total > 0 ? (total / initial) * 100 : 0;
   document.getElementById("progress").style.width = percent + "%";
 
@@ -128,14 +139,13 @@ function updateDisplay(){
   }
 
   document.getElementById("over").innerText = overtime > 0 ? "OVER " + format(overtime) : "";
-  document.getElementById("totalOver").innerText = totalOvertime > 0 ? "TOTAL OVER " + format(totalOvertime) : "";
 }
 
 function start(){
   if(!running){
-    if(total === 0 && overtime === 0) return; // 프리셋 선택 없으면 시작 안됨
-
+    if(total === 0) return; // 프리셋 선택 없으면 시작 안됨
     running = true;
+    requestWakeLock();
     interval = setInterval(()=>{
       if(total > 0){
         total--;
@@ -144,7 +154,6 @@ function start(){
         }
       } else {
         overtime++;
-        totalOvertime++;
       }
       updateDisplay();
     }, 1000);
@@ -154,6 +163,10 @@ function start(){
 function pause(){
   clearInterval(interval);
   running = false;
+  if(wakeLock){
+    wakeLock.release();
+    wakeLock = null;
+  }
 }
 
 function quickStart(sec, el){
