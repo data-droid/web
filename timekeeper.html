@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Keeper</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont;
+    color: white;
+    background: green;
+    transition: background 0.3s;
+  }
+  .progress-container {
+    width: 100%;
+    height: 10px;
+    background: rgba(255,255,255,0.2);
+  }
+  .progress-bar {
+    height: 100%;
+    width: 100%;
+    background: lime;
+    transition: width 1s linear;
+  }
+  #time { font-size: 110px; font-weight: 700; margin-top: 100px; }
+  #over { font-size: 28px; margin-top: 10px; opacity: 0.8; }
+  .controls { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+  button { font-size: 18px; padding: 12px 16px; border: none; border-radius: 12px; background: rgba(255,255,255,0.2); color: white; }
+  .preset button { font-size: 16px; padding: 10px 12px; }
+  .preset button.active { background: white; color: black; }
+</style>
+</head>
+<body>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progress"></div>
+</div>
+
+<div id="time">00:00</div>
+<div id="over"></div>
+
+<div class="controls">
+  <button onclick="start()">▶️ Start</button>
+  <button onclick="pause()">⏸ Stop</button>
+</div>
+
+<div class="controls preset">
+  <button onclick="quickStart(60, this)">1m</button>
+  <button onclick="quickStart(120, this)">2m</button>
+  <button onclick="quickStart(180, this)">3m</button>
+  <button onclick="quickStart(240, this)">4m</button>
+  <button onclick="quickStart(300, this)">5m</button>
+</div>
+
+<script>
+let total = 0;
+let initial = 0;
+let overtime = 0;
+let interval = null;
+let running = false;
+let beepPlayed = false;
+
+function format(sec){
+  let m = Math.floor(sec/60);
+  let s = sec % 60;
+  return String(m).padStart(2,'0') + ":" + String(s).padStart(2,'0');
+}
+
+function updateDisplay(){
+  document.getElementById("time").innerText = format(Math.max(0,total));
+  let percent = total > 0 ? (total/initial)*100 : 0;
+  document.getElementById("progress").style.width = percent + "%";
+
+  if(total <= 0){
+    document.body.style.background = "red";
+  } else if(total <= 30){
+    document.body.style.background = "orange";
+  } else {
+    document.body.style.background = "green";
+  }
+
+  document.getElementById("over").innerText = overtime > 0 ? "OVER " + format(overtime) : "";
+}
+
+function start(){
+  if(!running){
+    if(total===0) return;
+    running = true;
+    beepPlayed = false;
+
+    interval = setInterval(()=>{
+      if(total > 0){
+        total--;
+        if(total === 0 && !beepPlayed){
+          playBeep();
+          beepPlayed = true;
+        }
+      } else {
+        overtime++;
+      }
+      updateDisplay();
+    }, 1000);
+  }
+}
+
+function pause(){
+  clearInterval(interval);
+  running = false;
+}
+
+// 짧은 비프음 한 번 재생
+function playBeep(){
+  const ctx = new (window.AudioContext||window.webkitAudioContext)();
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.connect(g);
+  g.connect(ctx.destination);
+  o.type = "square";
+  o.frequency.value = 1000; // 1kHz
+  g.gain.value = 0.1;
+  o.start();
+  o.stop(ctx.currentTime + 0.3); // 0.3초만
+}
+
+function quickStart(sec, el){
+  clearInterval(interval);
+  total = sec;
+  initial = sec;
+  overtime = 0;
+  running = false;
+  beepPlayed = false;
+
+  document.querySelectorAll('.preset button').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+
+  updateDisplay();
+}
+
+updateDisplay();
+</script>
+
+</body>
+</html>
