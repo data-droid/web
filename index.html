@@ -51,14 +51,11 @@
     margin-top: 20px;
   }
 
-  input, button {
+  button {
     font-size: 18px;
     padding: 12px 16px;
     border: none;
     border-radius: 12px;
-  }
-
-  button {
     background: rgba(255,255,255,0.2);
     color: white;
   }
@@ -83,13 +80,11 @@
 
 <div id="time">00:00</div>
 <div id="over"></div>
+<div id="totalOver"></div>
 
 <div class="controls">
-  <input type="number" id="inputSec" placeholder="Sec" />
-  </div><div>
   <button onclick="start()">▶️ Start</button>
-  <button onclick="pause()">⏸ Pause</button>
-  <button onclick="reset()">🔄 Reset</button>
+  <button onclick="pause()">⏸ Stop</button>
 </div>
 
 <div class="controls preset">
@@ -112,44 +107,35 @@ let totalOvertime = 0;
 let interval = null;
 let running = false;
 
-// 포맷 함수
 function format(sec){
   let m = Math.floor(sec / 60);
   let s = sec % 60;
   return String(m).padStart(2,'0') + ":" + String(s).padStart(2,'0');
 }
 
-// 디스플레이 업데이트
 function updateDisplay(){
   document.getElementById("time").innerText = format(Math.max(0, total));
 
   let percent = total > 0 ? (total / initial) * 100 : 0;
   document.getElementById("progress").style.width = percent + "%";
 
-  // 색상
   if(total <= 0){
     document.body.style.background = "red";
   } else if(total <= 30){
-    document.body.style.background = "yellow";
+    document.body.style.background = "orange";
   } else {
     document.body.style.background = "green";
   }
 
-  // 초과시간 표시
   document.getElementById("over").innerText = overtime > 0 ? "OVER " + format(overtime) : "";
+  document.getElementById("totalOver").innerText = totalOvertime > 0 ? "TOTAL OVER " + format(totalOvertime) : "";
 }
 
-// 시작
 function start(){
   if(!running){
-    if(total === 0 && overtime === 0){
-      total = parseInt(document.getElementById("inputSec").value) || 0;
-      initial = total;
-    }
-    if(initial === 0) return;
+    if(total === 0 && overtime === 0) return; // 프리셋 선택 없으면 시작 안됨
 
     running = true;
-
     interval = setInterval(()=>{
       if(total > 0){
         total--;
@@ -165,25 +151,11 @@ function start(){
   }
 }
 
-// 일시정지
 function pause(){
   clearInterval(interval);
   running = false;
 }
 
-// 리셋
-function reset(){
-  clearInterval(interval);
-  total = 0;
-  initial = 0;
-  overtime = 0;
-  running = false;
-  document.body.style.background = "green";
-  document.getElementById("progress").style.width = "100%";
-  updateDisplay();
-}
-
-// 프리셋 선택
 function quickStart(sec, el){
   clearInterval(interval);
   total = sec;
