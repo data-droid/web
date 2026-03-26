@@ -2,28 +2,32 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Time Keeper</title>
-
 <style>
-  body {
+  html, body {
     margin: 0;
+    padding: 0;
+    width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     font-family: -apple-system, BlinkMacSystemFont;
     color: white;
     background: green;
     transition: background 0.3s;
+    overflow: hidden;
   }
 
   .progress-container {
     width: 100%;
     height: 10px;
     background: rgba(255,255,255,0.2);
+    position: absolute;
+    top: 0;
   }
-
   .progress-bar {
     height: 100%;
     width: 100%;
@@ -31,72 +35,65 @@
     transition: width 1s linear;
   }
 
-  #time {
-    font-size: 110px;
-    font-weight: 700;
-    margin-top: 100px;
+  #time { 
+    font-size: 20vw; 
+    font-weight: 700; 
+    text-align: center; 
   }
 
-  #over {
-    font-size: 28px;
-    margin-top: 10px;
-    opacity: 0.8;
+  #over { 
+    font-size: 5vw; 
+    margin-top: 1vh; 
+    opacity: 0.8; 
   }
 
-  .controls {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 20px;
+  .controls { 
+    display: flex; 
+    gap: 10px; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    margin-top: 3vh; 
   }
 
   button {
-    font-size: 18px;
-    padding: 12px 16px;
+    font-size: 4vw;
+    padding: 2vh 3vw;
     border: none;
     border-radius: 12px;
     background: rgba(255,255,255,0.2);
     color: white;
   }
 
-  .preset button {
-    font-size: 16px;
-    padding: 10px 12px;
-  }
-
   .preset button.active {
     background: white;
     color: black;
   }
+
+  .preset {
+    margin-bottom: 2vh;
+  }
 </style>
 </head>
-
 <body>
 
 <div class="progress-container">
   <div class="progress-bar" id="progress"></div>
 </div>
 
-<div id="time">00:00</div>
-<div id="over"></div>
+<div class="controls preset">
+  <button onclick="quickStart(60,this)">1m</button>
+  <button onclick="quickStart(120,this)">2m</button>
+  <button onclick="quickStart(180,this)">3m</button>
+  <button onclick="quickStart(240,this)">4m</button>
+  <button onclick="quickStart(300,this)">5m</button>
+</div>
 
 <div class="controls">
-  <button onclick="start()">▶️ Start</button>
-  <button onclick="pause()">⏸ Stop</button>
+  <button id="startStopBtn" onclick="toggleStartStop()">START</button>
 </div>
 
-<div class="controls preset">
-  <button onclick="quickStart(60, this)">1m</button>
-  <button onclick="quickStart(120, this)">2m</button>
-  <button onclick="quickStart(180, this)">3m</button>
-  <button onclick="quickStart(240, this)">4m</button>
-  <button onclick="quickStart(300, this)">5m</button>
-</div>
-
-<audio id="alarm">
-  <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">
-</audio>
+<div id="time">00:00</div>
+<div id="over"></div>
 
 <script>
 let total = 0;
@@ -104,83 +101,88 @@ let initial = 0;
 let overtime = 0;
 let interval = null;
 let running = false;
+let beepPlayed = false;
 let wakeLock = null;
 
-// Wake Lock 시도
+// 화면 꺼짐 방지 시도
 async function requestWakeLock() {
   try {
     wakeLock = await navigator.wakeLock?.request('screen');
-    if(wakeLock) {
-      wakeLock.addEventListener('release', () => console.log('Wake Lock released'));
-      console.log('Wake Lock active');
-    }
-  } catch (err) {
-    console.log('Wake Lock failed:', err);
-  }
+    if(wakeLock) wakeLock.addEventListener('release', ()=>console.log('Wake Lock released'));
+  } catch(e){ console.log('Wake Lock failed:',e); }
 }
 
 function format(sec){
-  let m = Math.floor(sec / 60);
-  let s = sec % 60;
-  return String(m).padStart(2,'0') + ":" + String(s).padStart(2,'0');
+  let m = Math.floor(sec/60);
+  let s = sec%60;
+  return String(m).padStart(2,'0')+":"+String(s).padStart(2,'0');
 }
 
 function updateDisplay(){
-  document.getElementById("time").innerText = format(Math.max(0, total));
-  let percent = total > 0 ? (total / initial) * 100 : 0;
+  document.getElementById("time").innerText = format(Math.max(0,total));
+  let percent = total > 0 ? (total/initial)*100 : 0;
   document.getElementById("progress").style.width = percent + "%";
 
-  if(total <= 0){
+  if(total<=0){
     document.body.style.background = "red";
-  } else if(total <= 30){
+  } else if(total<=30){
     document.body.style.background = "orange";
   } else {
     document.body.style.background = "green";
   }
 
-  document.getElementById("over").innerText = overtime > 0 ? "OVER " + format(overtime) : "";
+  document.getElementById("over").innerText = overtime>0 ? "OVER "+format(overtime) : "";
 }
 
-function start(){
-  if(!running){
-    if(total === 0) return; // 프리셋 선택 없으면 시작 안됨
-    running = true;
+function toggleStartStop(){
+  if(running){
+    clearInterval(interval);
+    running=false;
+    document.getElementById("startStopBtn").innerText="START";
+    if(wakeLock){ wakeLock.release(); wakeLock=null; }
+  } else {
+    if(total===0) return;
+    running=true;
+    beepPlayed=false;
+    document.getElementById("startStopBtn").innerText="STOP";
     requestWakeLock();
-    interval = setInterval(()=>{
-      if(total > 0){
+
+    interval=setInterval(()=>{
+      if(total>0){
         total--;
-        if(total === 0){
-          document.getElementById("alarm").play();
-        }
+        if(total===0 && !beepPlayed){ playBeep(); beepPlayed=true; }
       } else {
         overtime++;
       }
       updateDisplay();
-    }, 1000);
+    },1000);
   }
 }
 
-function pause(){
-  clearInterval(interval);
-  running = false;
-  if(wakeLock){
-    wakeLock.release();
-    wakeLock = null;
-  }
+// 비프음 1회
+function playBeep(){
+  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const o=ctx.createOscillator();
+  const g=ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.type="square"; o.frequency.value=1000; g.gain.value=0.1;
+  o.start(); o.stop(ctx.currentTime+0.3);
 }
 
 function quickStart(sec, el){
   clearInterval(interval);
-  total = sec;
-  initial = sec;
-  overtime = 0;
-  running = false;
+  total=sec; initial=sec; overtime=0; running=false; beepPlayed=false;
+  if(wakeLock){ wakeLock.release(); wakeLock=null; }
 
   document.querySelectorAll('.preset button').forEach(b=>b.classList.remove('active'));
   if(el) el.classList.add('active');
 
+  document.getElementById("startStopBtn").innerText="START";
   updateDisplay();
 }
+
+// 회전 시 폰트 재계산
+window.addEventListener('resize', updateDisplay);
 
 updateDisplay();
 </script>
