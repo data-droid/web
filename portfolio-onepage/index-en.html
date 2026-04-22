@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Portfolio</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --panel: #111827;
+        --muted: #94a3b8;
+        --text: #e2e8f0;
+        --accent: #38bdf8;
+        --border: #1f2937;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: linear-gradient(180deg, #020617 0%, #0b1120 100%);
+        color: var(--text);
+      }
+      .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px 72px; }
+      .lang-switch {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 20;
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid #334155;
+        background: rgba(15, 23, 42, 0.9);
+        color: #e2e8f0;
+        text-decoration: none;
+        font-size: 12px;
+      }
+      .lang-switch:hover { border-color: var(--accent); }
+      .hero { margin-bottom: 28px; }
+      h1 { font-size: clamp(28px, 4vw, 40px); margin: 0 0 10px; }
+      .subtitle { margin: 0; color: var(--muted); line-height: 1.6; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+      .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 14px; }
+      .flow-visual { margin-bottom: 16px; }
+      .card {
+        background: rgba(17, 24, 39, 0.8);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 15px;
+        backdrop-filter: blur(4px);
+      }
+      .grid .card { display: flex; flex-direction: column; min-height: 100%; }
+      .card h2 { margin: 0 0 8px; font-size: 19px; }
+      .label {
+        font-size: 12px;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 10px 0 5px;
+      }
+      .card p { margin: 0; color: #cbd5e1; line-height: 1.5; font-size: 14px; }
+      .impact { margin: 6px 0 0; padding-left: 18px; color: #cbd5e1; }
+      .impact li { margin-bottom: 3px; font-size: 14px; }
+      .flow { margin: 6px 0 0; padding-left: 18px; color: #cbd5e1; }
+      .flow li { margin-bottom: 5px; font-size: 14px; }
+      .pipeline { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+      .node {
+        flex: 1 1 150px;
+        min-height: 70px;
+        border: 1px solid #334155;
+        border-radius: 10px;
+        padding: 10px;
+        background: rgba(15, 23, 42, 0.55);
+      }
+      .node strong { display: block; font-size: 13px; margin-bottom: 4px; color: #e2e8f0; }
+      .node span { font-size: 12px; color: var(--muted); }
+      .arrow { color: #64748b; font-size: 18px; line-height: 1; }
+      .model-tags { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; }
+      .model-tag {
+        display: inline-block;
+        padding: 4px 8px;
+        border: 1px solid #334155;
+        border-radius: 999px;
+        font-size: 12px;
+        color: #cbd5e1;
+        background: rgba(15, 23, 42, 0.55);
+      }
+      .model-note { margin-top: 6px !important; font-size: 13px !important; color: var(--muted) !important; }
+      .section-title {
+        margin: 18px 2px 10px;
+        font-size: 13px;
+        letter-spacing: 0.04em;
+        color: var(--accent);
+        text-transform: uppercase;
+      }
+      .grid .label:first-of-type { margin-top: 6px; }
+      .grid .impact { margin-top: 8px; }
+      @media (max-width: 640px) {
+        .lang-switch {
+          top: 10px;
+          right: 10px;
+          padding: 7px 10px;
+          font-size: 11px;
+        }
+        .container { padding: 28px 14px 48px; }
+        .card { padding: 13px; }
+        .card h2 { font-size: 17px; line-height: 1.35; }
+        .label { font-size: 11px; margin: 8px 0 4px; }
+        .card p, .impact li, .flow li { font-size: 13px; line-height: 1.45; }
+        .model-tags { gap: 5px; }
+        .model-tag { font-size: 11px; padding: 3px 7px; }
+        .node { flex-basis: 100%; }
+        .arrow { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="lang-switch" href="./index.html" aria-label="Switch to Korean">KR</a>
+    <main class="container">
+      <section class="hero">
+        <h1>AI-Driven Problem Solving Portfolio</h1>
+        <p class="subtitle">
+          Five product cases showing how I automate repetitive work,
+          structure unstructured data, and turn outputs into actionable insights.
+        </p>
+      </section>
+
+      <section class="summary-grid" aria-label="portfolio-summary">
+        <article class="card">
+          <h2>Shared Problem, Shared Approach</h2>
+          <div class="label">Problem Pattern</div>
+          <p>Across all five projects, information is unstructured, scattered, and hard to reuse.</p>
+          <div class="label">Solution Pattern</div>
+          <p>I normalize user input and external data, then connect AI outputs to concrete actions.</p>
+          <div class="label">Impact Pattern</div>
+          <p>This reduces repetitive work, improves decision speed, and compounds personal knowledge assets.</p>
+        </article>
+
+        <article class="card">
+          <h2>AI Usage Principles (Summary)</h2>
+          <div class="label">Collection → Normalize → Infer → Serve → Improve</div>
+          <ul class="flow">
+            <li>Structure inputs first, then apply AI to analysis and inference.</li>
+            <li>Connect model outputs to UI, storage, and feedback loops.</li>
+            <li>Measure impact by how much repetitive user work is removed.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="flow-visual" aria-label="ai-problem-solving-flow">
+        <article class="card">
+          <h2>AI Problem-Solving Flow (Across 5 Cases)</h2>
+          <div class="pipeline">
+            <div class="node"><strong>1. Problem Framing</strong><span>Define repetitive, missing, and inefficient tasks</span></div>
+            <div class="arrow">→</div>
+            <div class="node"><strong>2. Data Collection</strong><span>Collect text, records, and external inputs</span></div>
+            <div class="arrow">→</div>
+            <div class="node"><strong>3. Normalization</strong><span>Schema mapping, field extraction, structuring</span></div>
+            <div class="arrow">→</div>
+            <div class="node"><strong>4. AI Inference</strong><span>Summarization, extraction, analysis, evaluation</span></div>
+            <div class="arrow">→</div>
+            <div class="node"><strong>5. Serving & Feedback</strong><span>UI integration, storage, and re-analysis loop</span></div>
+          </div>
+        </article>
+      </section>
+
+      <h3 class="section-title">Case Studies</h3>
+      <section class="grid" aria-label="projects">
+        <article class="card">
+          <h2>Case 01. Blog Knowledge System</h2>
+          <div class="label">Solution</div><p>A Jekyll-based technical blog focused on data engineering topics.</p>
+          <div class="label">Problem</div><p>Learning and work notes were scattered and difficult to reuse.</p>
+          <div class="label">AI Application</div><p>Used AI for draft generation, structuring, and style refinement.</p>
+          <div class="label">Model</div>
+          <div class="model-tags">
+            <span class="model-tag">LLM | Draft Generation</span>
+            <span class="model-tag">LLM | Summarization</span>
+            <span class="model-tag">LLM | Style Refinement</span>
+          </div>
+          <div class="label">Result</div><p class="model-note">Publishable drafts and structured technical articles.</p>
+          <div class="label">Key Contributions</div>
+          <ul class="impact">
+            <li>Built an archival writing structure to compound reusable knowledge.</li>
+            <li>Standardized article flow to reduce writing and publishing lead time.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Case 02. CareerWeb Automation</h2>
+          <div class="label">Solution</div><p>A workflow web app for job-post collection, Notion sync, and ATS analysis (React + FastAPI).</p>
+          <div class="label">Problem</div><p>Manual job-post review and comparison was repetitive and time-consuming.</p>
+          <div class="label">AI Application</div><p>Used AI for job parsing, ATS fit analysis, and structured report generation.</p>
+          <div class="label">Model</div>
+          <div class="model-tags">
+            <span class="model-tag">Gemini | Job Posting Parsing</span>
+            <span class="model-tag">Gemini | ATS Fit Analysis</span>
+            <span class="model-tag">Gemini | Report Generation</span>
+          </div>
+          <div class="label">Result</div><p class="model-note">Structured job data and ATS feedback reports.</p>
+          <div class="label">Key Contributions</div>
+          <ul class="impact">
+            <li>Converted manual collection-to-analysis steps into an automation pipeline.</li>
+            <li>Improved reusability through persistent Notion-based analysis records.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Case 03. sceneNote Learning Intelligence</h2>
+          <div class="label">Solution</div><p>A SwiftUI subtitle-learning core (`SubtitleCore`) with continuous study/review flow.</p>
+          <div class="label">Problem</div><p>Expression collection and review loops often broke during subtitle-based learning.</p>
+          <div class="label">AI Application</div><p>Used AI for subtitle chunk analysis, expression extraction, and learning-ready processing.</p>
+          <div class="label">Model</div>
+          <div class="model-tags">
+            <span class="model-tag">Gemini | Subtitle Chunk Analysis</span>
+            <span class="model-tag">Gemini | Expression Extraction</span>
+            <span class="model-tag">TTS Model | Pronunciation Playback</span>
+          </div>
+          <div class="label">Result</div><p class="model-note">A reusable expression list and pronunciation-based review workflow.</p>
+          <div class="label">Key Contributions</div>
+          <ul class="impact">
+            <li>Modularized core learning logic as SPM for maintainability and reuse.</li>
+            <li>Connected extraction to review UX for better learning continuity.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Case 04. coffeeJournal Data Capture</h2>
+          <div class="label">Solution</div><p>An iOS app for beans, recipes, cups, and brew-history tracking.</p>
+          <div class="label">Problem</div><p>Missing brew records made taste reproducibility difficult.</p>
+          <div class="label">AI Application</div><p>Used AI-assisted extraction and mapping to reduce manual record entry.</p>
+          <div class="label">Model</div>
+          <div class="model-tags">
+            <span class="model-tag">Gemini | Text Extraction</span>
+            <span class="model-tag">Gemini | Field Mapping</span>
+            <span class="model-tag">Gemini | Entry Assistance</span>
+          </div>
+          <div class="label">Result</div><p class="model-note">Auto-assisted bean and brew record data.</p>
+          <div class="label">Key Contributions</div>
+          <ul class="impact">
+            <li>Integrated bean/recipe/brew logs into a single reproducibility workflow.</li>
+            <li>Reduced input friction with AI-assisted entry automation.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Case 05. RecipeBook Structuring Engine</h2>
+          <div class="label">Solution</div><p>An iOS recipe app supporting save/search and cooking-mode execution.</p>
+          <div class="label">Problem</div><p>Unstructured online recipes were hard to convert into reusable personal assets.</p>
+          <div class="label">AI Application</div><p>Used AI parsing to normalize recipe text and automate content extraction.</p>
+          <div class="label">Model</div>
+          <div class="model-tags">
+            <span class="model-tag">Gemini | Recipe Parsing</span>
+            <span class="model-tag">Gemini | Data Structuring</span>
+            <span class="model-tag">Gemini | Content Extraction</span>
+          </div>
+          <div class="label">Result</div><p class="model-note">Reusable, structured recipe data for downstream use.</p>
+          <div class="label">Key Contributions</div>
+          <ul class="impact">
+            <li>Improved search and reuse by converting unstructured recipes to structured data.</li>
+            <li>Increased usability by separating cooking-mode and detail-view flows.</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

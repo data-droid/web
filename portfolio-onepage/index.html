@@ -31,6 +31,25 @@
         padding: 40px 20px 72px;
       }
 
+      .lang-switch {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 20;
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid #334155;
+        background: rgba(15, 23, 42, 0.9);
+        color: #e2e8f0;
+        text-decoration: none;
+        font-size: 12px;
+      }
+
+      .lang-switch:hover {
+        border-color: var(--accent);
+      }
+
       .hero {
         margin-bottom: 28px;
       }
@@ -202,6 +221,13 @@
       }
 
       @media (max-width: 640px) {
+        .lang-switch {
+          top: 10px;
+          right: 10px;
+          padding: 7px 10px;
+          font-size: 11px;
+        }
+
         .container {
           padding: 28px 14px 48px;
         }
@@ -247,6 +273,7 @@
     </style>
   </head>
   <body>
+    <a class="lang-switch" href="./index-en.html" aria-label="Switch to English">EN</a>
     <main class="container">
       <section class="hero">
         <h1>AI-Driven Problem Solving Portfolio</h1>
