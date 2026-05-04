@@ -101,6 +101,29 @@
         font-size: 19px;
       }
 
+      .repo-links {
+        margin: 0 0 4px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .repo-link {
+        display: inline-block;
+        padding: 4px 10px;
+        border: 1px solid #334155;
+        border-radius: 999px;
+        font-size: 12px;
+        color: var(--accent);
+        text-decoration: none;
+        background: rgba(15, 23, 42, 0.55);
+      }
+
+      .repo-link:hover {
+        border-color: var(--accent);
+        color: #e2e8f0;
+      }
+
       .label {
         font-size: 12px;
         letter-spacing: 0.03em;
@@ -262,6 +285,11 @@
           padding: 3px 7px;
         }
 
+        .repo-link {
+          font-size: 11px;
+          padding: 3px 8px;
+        }
+
         .node {
           flex-basis: 100%;
         }
@@ -347,6 +375,15 @@
       <section class="grid" aria-label="projects">
         <article class="card">
           <h2>Case 01. Blog Knowledge System</h2>
+          <div class="repo-links">
+            <a
+              class="repo-link"
+              href="https://github.com/data-droid/data-droid.github.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              >data-droid.github.io</a
+            >
+          </div>
           <div class="label">솔루션</div>
           <p>Jekyll 기반의 데이터 엔지니어링 기술 블로그.</p>
           <div class="label">문제</div>
@@ -370,6 +407,22 @@
 
         <article class="card">
           <h2>Case 02. CareerWeb Automation</h2>
+          <div class="repo-links">
+            <a
+              class="repo-link"
+              href="https://github.com/data-droid/CareerWeb"
+              target="_blank"
+              rel="noopener noreferrer"
+              >CareerWeb</a
+            >
+            <a
+              class="repo-link"
+              href="https://github.com/data-droid/CareerWeb-backend"
+              target="_blank"
+              rel="noopener noreferrer"
+              >CareerWeb-backend</a
+            >
+          </div>
           <div class="label">솔루션</div>
           <p>채용공고 수집, Notion 정리, ATS 분석까지 연결한 작업 관리 웹앱 (React + FastAPI).</p>
           <div class="label">문제</div>
@@ -393,6 +446,15 @@
 
         <article class="card">
           <h2>Case 03. sceneNote Learning Intelligence</h2>
+          <div class="repo-links">
+            <a
+              class="repo-link"
+              href="https://github.com/data-droid/sceneNote"
+              target="_blank"
+              rel="noopener noreferrer"
+              >sceneNote</a
+            >
+          </div>
           <div class="label">솔루션</div>
           <p>자막 학습을 위한 SwiftUI 앱 코어(SubtitleCore)와 학습/복습 흐름.</p>
           <div class="label">문제</div>
@@ -416,6 +478,15 @@
 
         <article class="card">
           <h2>Case 04. coffeeJournal Data Capture</h2>
+          <div class="repo-links">
+            <a
+              class="repo-link"
+              href="https://github.com/data-droid/coffeeJournal"
+              target="_blank"
+              rel="noopener noreferrer"
+              >coffeeJournal</a
+            >
+          </div>
           <div class="label">솔루션</div>
           <p>원두/레시피/컵 기록과 추출 히스토리를 관리하는 iOS 앱.</p>
           <div class="label">문제</div>
@@ -439,6 +510,15 @@
 
         <article class="card">
           <h2>Case 05. RecipeBook Structuring Engine</h2>
+          <div class="repo-links">
+            <a
+              class="repo-link"
+              href="https://github.com/data-droid/recipeBook"
+              target="_blank"
+              rel="noopener noreferrer"
+              >recipeBook</a
+            >
+          </div>
           <div class="label">솔루션</div>
           <p>레시피 저장/검색/조리 모드를 제공하는 iOS 레시피 관리 앱.</p>
           <div class="label">문제</div>
